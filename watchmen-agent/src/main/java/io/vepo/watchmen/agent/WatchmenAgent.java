@@ -9,5 +9,8 @@ public class WatchmenAgent {
 
 	public static void agentmain(String agentArguments, Instrumentation instrumentation) {
 		System.out.println("OK agentmain");
+		InterceptingClassTransformer interceptingClassTransformer = new InterceptingClassTransformer();
+		interceptingClassTransformer.init();
+		instrumentation.addTransformer(interceptingClassTransformer);
 	}
 }

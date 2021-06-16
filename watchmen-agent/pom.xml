@@ -18,6 +18,16 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-util</artifactId>
+			<version>9.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -51,44 +61,8 @@
 									<shadedPattern>io.vepo.watchmen.agent.shaded.bytebuddy</shadedPattern>
 								</relocation>
 								<relocation>
-									<pattern>com.dslplatform</pattern>
-									<shadedPattern>io.vepo.watchmen.agent.shaded.dslplatform</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>com.lmax</pattern>
-									<shadedPattern>io.vepo.watchmen.agent.shaded.lmax</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>org.slf4j</pattern>
-									<shadedPattern>io.vepo.watchmen.agent.shaded.slf4j</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>org.stagemonitor</pattern>
-									<shadedPattern>io.vepo.watchmen.agent.shaded.stagemonitor</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>org.jctools</pattern>
-									<shadedPattern>io.vepo.watchmen.agent.shaded.jctools</shadedPattern>
-								</relocation>
-								<!-- Makes sure that the relocated slf4j simple does not look for 
-									a simplelogger.properties Although this is not a package but a string constant, 
-									it does work -->
-								<relocation>
-									<pattern>simplelogger.properties</pattern>
-									<shadedPattern>elasticapmlogger.properties</shadedPattern>
-								</relocation>
-								<!-- See javadoc of io.vepo.watchmen.agent.logging.JulBridgeLogger -->
-								<relocation>
-									<pattern>java.util.logging.Logger</pattern>
-									<shadedPattern>io.vepo.watchmen.agent.logging.JulBridgeLogger</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>com.blogspot.mydailyjava.weaklockfree</pattern>
-									<shadedPattern>io.vepo.watchmen.agent.shaded.weaklockfree</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>org.HdrHistogram</pattern>
-									<shadedPattern>io.vepo.watchmen.agent.shaded.HdrHistogram</shadedPattern>
+									<pattern>org.object.asm</pattern>
+									<shadedPattern>io.vepo.watchmen.agent.shaded.object.asm</shadedPattern>
 								</relocation>
 							</relocations>
 							<transformers>
@@ -110,8 +84,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
-
 </project>
