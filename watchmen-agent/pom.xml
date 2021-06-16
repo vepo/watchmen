@@ -13,6 +13,10 @@
 	<packaging>jar</packaging>
 	<name>Watchmen :: Agent</name>
 
+	<properties>
+		<watchmen.agent>io.vepo.watchmen.agent.WatchmenAgent</watchmen.agent>
+	</properties>
+
 	<dependencies>
 	</dependencies>
 
@@ -21,14 +25,92 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
-				<configuration>
-					<archive>
-						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-					</archive>
-				</configuration>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<createSourcesJar>true</createSourcesJar>
+							<shadeSourcesContent>true</shadeSourcesContent>
+							<shadedArtifactAttached>false</shadedArtifactAttached>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>**/module-info.class</exclude>
+									</excludes>
+								</filter>
+							</filters>
+							<relocations>
+								<relocation>
+									<pattern>net.bytebuddy</pattern>
+									<shadedPattern>io.vepo.watchmen.agent.shaded.bytebuddy</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>com.dslplatform</pattern>
+									<shadedPattern>io.vepo.watchmen.agent.shaded.dslplatform</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>com.lmax</pattern>
+									<shadedPattern>io.vepo.watchmen.agent.shaded.lmax</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>org.slf4j</pattern>
+									<shadedPattern>io.vepo.watchmen.agent.shaded.slf4j</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>org.stagemonitor</pattern>
+									<shadedPattern>io.vepo.watchmen.agent.shaded.stagemonitor</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>org.jctools</pattern>
+									<shadedPattern>io.vepo.watchmen.agent.shaded.jctools</shadedPattern>
+								</relocation>
+								<!-- Makes sure that the relocated slf4j simple does not look for 
+									a simplelogger.properties Although this is not a package but a string constant, 
+									it does work -->
+								<relocation>
+									<pattern>simplelogger.properties</pattern>
+									<shadedPattern>elasticapmlogger.properties</shadedPattern>
+								</relocation>
+								<!-- See javadoc of io.vepo.watchmen.agent.logging.JulBridgeLogger -->
+								<relocation>
+									<pattern>java.util.logging.Logger</pattern>
+									<shadedPattern>io.vepo.watchmen.agent.logging.JulBridgeLogger</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>com.blogspot.mydailyjava.weaklockfree</pattern>
+									<shadedPattern>io.vepo.watchmen.agent.shaded.weaklockfree</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>org.HdrHistogram</pattern>
+									<shadedPattern>io.vepo.watchmen.agent.shaded.HdrHistogram</shadedPattern>
+								</relocation>
+							</relocations>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Premain-Class>${watchmen.agent}</Premain-Class>
+										<Agent-Class>${watchmen.agent}</Agent-Class>
+										<Can-Redefine-Classes>true</Can-Redefine-Classes>
+										<Can-Retransform-Classes>true</Can-Retransform-Classes>
+										<Can-Set-Native-Method-Prefix>true</Can-Set-Native-Method-Prefix>
+										<Automatic-Module-Name>${project.groupId}.agent</Automatic-Module-Name>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 

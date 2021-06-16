@@ -19,16 +19,6 @@
 			<artifactId>byte-buddy-agent</artifactId>
 			<version>1.11.2</version>
 		</dependency>
-		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>jna</artifactId>
-			<version>5.3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>jna-platform</artifactId>
-			<version>5.3.1</version>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -86,7 +76,6 @@
 				<version>3.2.4</version>
 				<executions>
 					<execution>
-						<id>without-jna</id>
 						<phase>package</phase>
 						<goals>
 							<goal>shade</goal>
@@ -101,25 +90,6 @@
 							<createSourcesJar>true</createSourcesJar>
 							<shadeSourcesContent>true</shadeSourcesContent>
 							<shadedArtifactAttached>false</shadedArtifactAttached>
-							<relocations>
-								<relocation>
-									<pattern>net.bytebuddy</pattern>
-									<shadedPattern>io.vepo.watchmen.attach.bytebuddy</shadedPattern>
-								</relocation>
-							</relocations>
-						</configuration>
-					</execution>
-					<execution>
-						<id>with-jna</id>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<shadedArtifactAttached>true</shadedArtifactAttached>
-							<shadedClassifierName>standalone</shadedClassifierName>
-							<createSourcesJar>true</createSourcesJar>
-							<shadeSourcesContent>true</shadeSourcesContent>
 							<relocations>
 								<relocation>
 									<pattern>net.bytebuddy</pattern>

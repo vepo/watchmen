@@ -40,8 +40,7 @@ public class WatchmenAttacher {
 					throw new IllegalStateException("Agent jar not found");
 				}
 				String hash = md5Hash(WatchmenAttacher.class.getResourceAsStream("/watchmen-agent.jar"));
-				File tempAgentJar = new File(System.getProperty("java.io.tmpdir"),
-						"elastic-apm-agent-" + hash + ".jar");
+				File tempAgentJar = new File(System.getProperty("java.io.tmpdir"), "watchmen-agent-" + hash + ".jar");
 				if (!tempAgentJar.exists()) {
 					try (OutputStream out = new FileOutputStream(tempAgentJar)) {
 						byte[] buffer = new byte[1024];
